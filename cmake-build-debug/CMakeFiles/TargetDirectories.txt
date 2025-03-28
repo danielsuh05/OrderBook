@@ -1,3 +1,0 @@
-/Users/danielsuh/code/projects/SimpleOrderBook/cmake-build-debug/CMakeFiles/SimpleOrderBook.dir
-/Users/danielsuh/code/projects/SimpleOrderBook/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/danielsuh/code/projects/SimpleOrderBook/cmake-build-debug/CMakeFiles/rebuild_cache.dir
