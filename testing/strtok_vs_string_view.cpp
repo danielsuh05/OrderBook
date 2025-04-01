@@ -24,12 +24,18 @@ void test_strtok_r_no_dup(char *input) {
 }
 
 void custom_split_no_dup(std::string_view s) {
-	const char *p = s.data();
-	while (*p != '\0') {
-		if (*p != ' ') {
-			custom_split_count++;
-		}
-		p++;
+	size_t start = 0;
+	while (start < s.size()) {
+		while (start < s.size() && s[start] == ' ') start++;
+
+		if (start >= s.size()) break;
+
+		size_t end = start;
+		while (end < s.size() && s[end] != ' ') end++;
+
+		custom_split_count += end - start;
+
+		start = end;
 	}
 }
 
@@ -48,7 +54,7 @@ int main() {
 		start = clock();
 		test_strtok_r_no_dup(buffer1);
 		end = clock();
-		time_strtok_r += ((double)(end - start)) / CLOCKS_PER_SEC;
+		time_strtok_r += ((double) (end - start)) / CLOCKS_PER_SEC;
 	}
 	std::printf("strtok_r time: %f seconds\n", time_strtok_r);
 
@@ -57,7 +63,7 @@ int main() {
 		start = clock();
 		custom_split_no_dup(buffer2);
 		end = clock();
-		time_custom += ((double)(end - start)) / CLOCKS_PER_SEC;
+		time_custom += ((double) (end - start)) / CLOCKS_PER_SEC;
 	}
 	std::printf("custom split time: %f seconds\n", time_custom);
 

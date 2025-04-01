@@ -1,0 +1,5 @@
+# ninja log v5
+1	790	1743478626348995734	CMakeFiles/SimpleOrderBook.dir/src/OrderParser.cpp.o	af5381e63f554aab
+2	838	1743478626397514856	CMakeFiles/SimpleOrderBook.dir/src/ErrorHandler.cpp.o	35629c233b8a71d8
+0	910	1743478626468489785	CMakeFiles/SimpleOrderBook.dir/src/main.cpp.o	a851cd79eacb80a9
+5	1665	1743478769271912136	CMakeFiles/SimpleOrderBook.dir/src/main.cpp.o	a851cd79eacb80a9
