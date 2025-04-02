@@ -6,14 +6,8 @@
 #include <iostream>
 #include <string_view>
 
+ITCHParser& ITCHParser::getInstance() {
+	static ITCHParser instance{};
+	return instance;
+}
 
-//
-//OrderType ITCHParser::getOrderType(std::string_view typeString) {
-//	if (typeString == "limit") {
-//		return OrderType::Limit;
-//	} else if (typeString == "market") {
-//		return OrderType::Market;
-//	} else {
-//
-//	}
-//}

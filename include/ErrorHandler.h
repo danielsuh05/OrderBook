@@ -28,13 +28,10 @@ class ErrorHandler {
  private:
 	ErrorHandler();
 
-	// Not allowed to copy or move either
 	ErrorHandler(const ErrorHandler &) = delete;
-
 	ErrorHandler &operator=(const ErrorHandler &) = delete;
 
 	ErrorHandler(const ErrorHandler &&) = delete;
-
 	ErrorHandler &operator=(const ErrorHandler &&) = delete;
 
 	std::condition_variable cv_{};

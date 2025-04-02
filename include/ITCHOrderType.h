@@ -5,11 +5,10 @@
 #ifndef SIMPLEORDERBOOK_ORDERTYPE_H
 #define SIMPLEORDERBOOK_ORDERTYPE_H
 
-enum class OrderType {
+enum class ITCHOrderType {
 	Limit,
 	Market
 };
-
 
 
 #endif //SIMPLEORDERBOOK_ORDERTYPE_H

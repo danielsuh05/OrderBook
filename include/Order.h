@@ -6,14 +6,14 @@
 #define SIMPLEORDERBOOK_ORDER_H
 
 #include "Side.h"
-#include "OrderType.h"
+#include "ITCHOrderType.h"
 #include <cstdint>
 
 struct Order {
   std::int32_t price_;
   std::int32_t quantity_;
   std::int32_t orderId_;
-  OrderType orderType_;
+  ITCHOrderType orderType_;
   Side side_;
 };
 

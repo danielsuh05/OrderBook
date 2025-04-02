@@ -11,21 +11,17 @@
 
 class ITCHParser {
 public:
+	static ITCHParser& getInstance();
+private:
 	ITCHParser() = default;
 
 	// Should not be able to copy an ITCHParser object
 	ITCHParser(const ITCHParser &) = delete;
-
 	ITCHParser &operator=(const ITCHParser &) = delete;
 
 	// Should not be able to move an ITCHParser object
 	ITCHParser(const ITCHParser &&) = delete;
-
 	ITCHParser &operator=(const ITCHParser &&) = delete;
-
-private:
-	OrderType getOrderType(std::string_view);
-
 };
 
 

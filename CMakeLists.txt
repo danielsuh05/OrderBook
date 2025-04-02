@@ -18,16 +18,18 @@ set(SOURCES
         src/main.cpp
         src/ITCHParser.cpp
         src/ErrorHandler.cpp
+        src/ITCHMessageType.cpp
 )
 
 set(HEADERS
         include/ITCHParser.h
         include/Order.h
         include/Side.h
-        include/OrderType.h
+        include/ITCHOrderType.h
         include/Error.h
         include/ErrorHandler.h
         include/ErrorType.h
+        include/ITCHMessageType.h
 )
 
 add_executable(SimpleOrderBook ${SOURCES} ${HEADERS})
