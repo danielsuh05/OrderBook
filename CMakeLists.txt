@@ -9,20 +9,19 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 set(BOOST_ROOT "/opt/homebrew/opt/boost")
 set(Boost_NO_SYSTEM_PATHS TRUE)
-find_package(Boost REQUIRED COMPONENTS filesystem system)
+find_package(Boost)
 include_directories(${Boost_INCLUDE_DIRS})
 
 include_directories(include)
 
 set(SOURCES
         src/main.cpp
-        src/OrderParser.cpp
-        src/Error.cpp
+        src/ITCHParser.cpp
         src/ErrorHandler.cpp
 )
 
 set(HEADERS
-        include/OrderParser.h
+        include/ITCHParser.h
         include/Order.h
         include/Side.h
         include/OrderType.h
@@ -34,3 +33,5 @@ set(HEADERS
 add_executable(SimpleOrderBook ${SOURCES} ${HEADERS})
 
 target_link_libraries(SimpleOrderBook ${Boost_LIBRARIES})
+
+add_subdirectory(gtests)

@@ -2,6 +2,13 @@ cmake-build-debug/
 .idea/
 build/
 .cmake/
+gtests/lib
+gtests/CmakeFiles
+CMakefiles/
+lib/
+.ninja*
+CMakeCache.txt
+cmake_install.cmake
 *.ninja
 
 CMakeLists.txt.user

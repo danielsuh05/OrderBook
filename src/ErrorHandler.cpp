@@ -11,7 +11,7 @@ ErrorHandler &ErrorHandler::getInstance() {
 }
 
 ErrorHandler::ErrorHandler()
-		: isRunning_{false}, thread_{&ErrorHandler::processErrors, this} {}
+		: isRunning_{true}, thread_{&ErrorHandler::processErrors, this} {}
 
 ErrorHandler::~ErrorHandler() {
 	isRunning_ = false;
@@ -36,18 +36,25 @@ void ErrorHandler::postError(const Error &error) {
 	cv_.notify_one();
 }
 
+
 void ErrorHandler::processErrors() {
 	while (isRunning_) {
-		std::unique_lock<std::mutex> lock{mutex_};
+		std::queue<Error> localErrors;
 
-		// Wait on the lock and prevent spurious wakeup
-		cv_.wait(lock, [this] { return !errors_.empty(); });
-		while (!errors_.empty()) {
-			Error error = errors_.front();
-			errors_.pop();
-			lock.unlock(); // Done editing internal state
-
-			std::cerr << "[ERROR " << error.errorType_ << "]: " << error.errorMessage_ << "\n";
+		{
+			std::scoped_lock<std::mutex> lock(mutex_);
+			std::swap(localErrors, errors_);
 		}
+
+		while (!localErrors.empty()) {
+			Error error = localErrors.front();
+			localErrors.pop();
+			std::cerr << "[ERROR, " << error.errorType_ << ", "
+			          << error.orderId_.value_or(-1) << "]: "
+			          << error.errorMessage_ << "\n";
+		}
+
+		// Optional: add a small delay to prevent busy-waiting from hogging the CPU.
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 }

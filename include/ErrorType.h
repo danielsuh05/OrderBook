@@ -10,7 +10,7 @@ enum class ErrorType {
 	Parsing,
 };
 
-std::ostream &operator<<(std::ostream &os, ErrorType e) {
+inline std::ostream &operator<<(std::ostream &os, ErrorType e) {
 	switch (e) {
 		case ErrorType::Parsing: return (os << "PARSING");
 	}

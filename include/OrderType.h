@@ -10,4 +10,6 @@ enum class OrderType {
 	Market
 };
 
+
+
 #endif //SIMPLEORDERBOOK_ORDERTYPE_H
