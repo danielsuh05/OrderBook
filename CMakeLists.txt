@@ -24,7 +24,6 @@ set(HEADERS
         include/ITCHOrder.h
         include/Side.h
         include/ITCHOrder.tpp
-        include/ITCHOrderType.h
         include/Error.h
         include/ErrorHandler.h
         include/ErrorType.h

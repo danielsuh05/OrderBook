@@ -6,7 +6,6 @@
 #define SIMPLEORDERBOOK_ORDER_H
 
 #include "Side.h"
-#include "ITCHOrderType.h"
 #include "ITCHMessageType.h"
 #include <cstdint>
 
