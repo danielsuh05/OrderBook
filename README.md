@@ -24,6 +24,4 @@ depth++ is an efficient order book written in C++. It is a personal project and 
   - `boost::qi::parse`: 74 ms
 - I decided against creating a separate class that acts as the parser. Because templates need to be defined at compile-time, there is really no clean solution to create an object of type `ITCHOrder<T>` if `T` is unknown in this parser. Therefore, to parse, you must do `ITCHOrder<T>::parse()`. 
 - 
-<strike>
-- I believe this only works on MacOS systems because of the way I convert the ITCH big endian to the host byte order. WIP: convert to some other function that makes it cross-platform. 
-</strike>
+- <strike>I believe this only works on MacOS systems because of the way I convert the ITCH big endian to the host byte order. WIP: convert to some other function that makes it cross-platform.</strike> -> I converted to using `boost::endian`.
