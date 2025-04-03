@@ -25,14 +25,14 @@ class ErrorHandler {
 
 	~ErrorHandler();
 
- private:
-	ErrorHandler();
-
 	ErrorHandler(const ErrorHandler &) = delete;
 	ErrorHandler &operator=(const ErrorHandler &) = delete;
 
 	ErrorHandler(const ErrorHandler &&) = delete;
 	ErrorHandler &operator=(const ErrorHandler &&) = delete;
+
+ private:
+	ErrorHandler();
 
 	std::condition_variable cv_{};
 	std::mutex mutex_{};

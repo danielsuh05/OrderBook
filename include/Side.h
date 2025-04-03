@@ -8,7 +8,6 @@
 enum class Side {
 	Buy = 'B',
 	Sell = 'S',
-	Error
 };
 
 Side charToSide(char c);

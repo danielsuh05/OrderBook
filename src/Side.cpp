@@ -6,7 +6,5 @@ Side charToSide(char c) {
 			return Side::Buy;
 		case 'S':
 			return Side::Sell;
-		default:
-			return Side::Error;
 	}
 }

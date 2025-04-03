@@ -8,11 +8,13 @@
 
 enum class ErrorType {
 	Parsing,
+	Reading,
 };
 
 inline std::ostream &operator<<(std::ostream &os, ErrorType e) {
 	switch (e) {
 		case ErrorType::Parsing: return (os << "PARSING");
+		case ErrorType::Reading: return (os << "READING");
 	}
 	return os;
 }
