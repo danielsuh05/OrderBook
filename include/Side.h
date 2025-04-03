@@ -6,8 +6,11 @@
 #define SIMPLEORDERBOOK_SIDE_H
 
 enum class Side {
-	Buy,
-	Sell
+	Buy = 'B',
+	Sell = 'S',
+	Error
 };
+
+Side charToSide(char c);
 
 #endif //SIMPLEORDERBOOK_SIDE_H

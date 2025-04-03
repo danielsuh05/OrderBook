@@ -16,15 +16,14 @@ include_directories(include)
 
 set(SOURCES
         src/main.cpp
-        src/ITCHParser.cpp
         src/ErrorHandler.cpp
-        src/ITCHMessageType.cpp
+        src/Side.cpp
 )
 
 set(HEADERS
-        include/ITCHParser.h
-        include/Order.h
+        include/ITCHOrder.h
         include/Side.h
+        include/ITCHOrder.tpp
         include/ITCHOrderType.h
         include/Error.h
         include/ErrorHandler.h

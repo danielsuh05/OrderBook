@@ -1,4 +1,6 @@
 cmake-build-debug/
+*ninja*
+./gtests/gtests_run
 .idea/
 build/
 .cmake/
