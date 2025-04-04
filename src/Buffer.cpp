@@ -60,8 +60,3 @@ Buffer::~Buffer() {
 	}
 	delete[] ptr_;
 }
-
-void Buffer::setFD(int fd) {
-	assert(fd >= 0);
-	fd_ = fd;
-}

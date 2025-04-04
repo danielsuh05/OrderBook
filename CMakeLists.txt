@@ -19,12 +19,12 @@ set(SOURCES
         src/ErrorHandler.cpp
         src/Side.cpp
         src/Buffer.cpp
-        src/ITCHReader.cpp
+        src/ITCHParser.cpp
 )
 
 set(HEADERS
         include/ITCHOrder.h
-        include/ITCHReader.h
+        include/ITCHParser.h
         include/Side.h
         include/Buffer.h
         include/ITCHOrder.tpp

@@ -23,24 +23,17 @@ public:
 
 	void read();
 
-	void setFD(int fd);
-
-	size_t getLimit() const { return limit_; }
-	size_t getPos() const { return pos_; }
-	const char* getBuffer() const { return ptr_; }
-	bool isRunning() const { return isRunning_; }
-	void setPos(size_t pos) { pos_ = pos; }
-
-private:
 	char* ptr_;
 	const size_t size_;
 	size_t limit_;
 	size_t pos_;
 	int fd_ = -1;
+	std::atomic<bool> isRunning_{};
+
+private:
 
 	std::condition_variable cv{};
 	std::mutex mutex_{};
-	std::atomic<bool> isRunning_{};
 	std::thread thread_{};
 };
 
