@@ -10,31 +10,15 @@
 #include <cassert>
 #include <cstring>
 
-class Buffer {
-public:
-	explicit Buffer(size_t size);
+struct Buffer {
+	char* ptr_{};
+	const size_t size_{};
+	int fd_{};
+
+	explicit Buffer(size_t size, int fd);
 	~Buffer();
 
-	[[nodiscard]] const char* get(size_t offset) const;
-
-	[[nodiscard]] size_t writableSpace() const;
-
-	void saveAfterPos();
-
 	void read();
-
-	char* ptr_;
-	const size_t size_;
-	size_t limit_;
-	size_t pos_;
-	int fd_ = -1;
-	std::atomic<bool> isRunning_{};
-
-private:
-
-	std::condition_variable cv{};
-	std::mutex mutex_{};
-	std::thread thread_{};
 };
 
 #endif //SIMPLEORDERBOOK_INCLUDE_BUFFER_H_

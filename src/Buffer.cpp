@@ -4,59 +4,21 @@
 #include <unistd.h>
 #include <iostream>
 
-Buffer::Buffer(size_t size)
+Buffer::Buffer(size_t size, int fd)
 		: ptr_(new char[size]),
 		  size_(size),
-		  limit_(0),
-		  pos_(0),
-		  isRunning_(true)
-{
-	thread_ = std::thread([this]() {
-		while (isRunning_) {
-			this->read();
-		}
-	});
-}
+			fd_(fd)
+{}
 
 void Buffer::read() {
-	std::unique_lock<std::mutex> lock(mutex_);
-	cv.wait(lock, [this]() { return (limit_ < size_) || !isRunning_; });
-	if (!isRunning_) {
-		return;
-	}
-	size_t free = size_ - limit_;
-	lock.unlock();
-	ssize_t bytes = ::read(fd_, ptr_ + limit_, free);
-	lock.lock();
+	ssize_t bytes = ::read(fd_, ptr_, size_);
 	if (bytes > 0) {
-		limit_ += static_cast<size_t>(bytes);
-	} else if (bytes == 0) {
-		isRunning_ = false;
-	} else {
+	} else if (bytes < 0) {
 		ErrorHandler::getInstance().postError(Error{"Failure reading the file", std::nullopt, ErrorType::Reading});
-		isRunning_ = false;
-	}
+	} // if bytes == 0, EOF reached
 }
 
-void Buffer::saveAfterPos() {
-	std::lock_guard<std::mutex> lock(mutex_);
-	if (pos_ < limit_) {
-		std::memmove(ptr_, ptr_ + pos_, limit_ - pos_);
-		limit_ -= pos_;
-		pos_ = 0;
-	}
-	isRunning_ = true;
-	cv.notify_one();
-}
 
 Buffer::~Buffer() {
-	{
-		std::lock_guard<std::mutex> lock(mutex_);
-		isRunning_ = false;
-		cv.notify_all();
-	}
-	if (thread_.joinable()) {
-		thread_.join();
-	}
 	delete[] ptr_;
 }

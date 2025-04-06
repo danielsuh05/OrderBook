@@ -32,6 +32,7 @@ set(HEADERS
         include/ErrorHandler.h
         include/ErrorType.h
         include/ITCHMessageType.h
+        include/Constants.h
 )
 
 add_executable(SimpleOrderBook ${SOURCES} ${HEADERS})

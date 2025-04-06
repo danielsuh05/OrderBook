@@ -9,23 +9,14 @@
 
 class ITCHParser {
 public:
-	ITCHParser(Buffer& buffer);
+	ITCHParser(std::size_t bufferSize, int fd);
 
-	~ITCHParser();
+	void parseBuffer();
 
-	void start();
 
-	void stop();
-
+	// TODO MAKE THIS CLEANER
+	Buffer buffer_;
 private:
-	void parseLoop();
-
-	Buffer& buffer_;
-	bool stopParsing_;
-
-	std::thread parserThread_;
-	std::mutex mutex_;
-	std::condition_variable cv_;
 };
 
 #endif //SIMPLEORDERBOOK_INCLUDE_ITCHPARSER_H_

@@ -34,8 +34,7 @@ TEST_F(BufferTest, ReadOperationUpdatesLimit) {
 	const char* testData = "Hello, Buffer!";
 	size_t testDataSize = std::strlen(testData);
 
-	Buffer buffer(1024);
-	buffer.fd_ = pipefd[0];
+	Buffer buffer(1024, pipefd[0]);
 
 	ssize_t written = write(pipefd[1], testData, testDataSize);
 	ASSERT_EQ(written, static_cast<ssize_t>(testDataSize));
@@ -52,8 +51,7 @@ TEST_F(BufferTest, SaveAfterPosShiftsData) {
 	const char* testData = "DataInBuffer";
 	size_t testDataSize = std::strlen(testData);
 
-	Buffer buffer(1024);
-	buffer.fd_ = pipefd[0];
+	Buffer buffer(1024, pipefd[0]);
 
 	ssize_t written = write(pipefd[1], testData, testDataSize);
 	ASSERT_EQ(written, static_cast<ssize_t>(testDataSize));
@@ -73,8 +71,7 @@ TEST_F(BufferTest, SaveAfterPosShiftsData) {
 }
 
 TEST_F(BufferTest, EOFHandlingStopsThread) {
-	Buffer buffer(1024);
-	buffer.fd_ = pipefd[0];
+	Buffer buffer(1024, pipefd[0]);
 
 	close(pipefd[1]);
 
@@ -88,8 +85,7 @@ TEST_F(BufferTest, ReadMoreThanBufferCapacityAndSaveAfterPos) {
 	std::string testData(2048, 'A');
 
 	testData[1023] = 'B';
-	Buffer buffer(bufferSize);
-	buffer.fd_ = pipefd[0];
+	Buffer buffer(bufferSize, pipefd[0]);
 
 	ssize_t written = write(pipefd[1], testData.data(), bufferSize);
 	ASSERT_EQ(written, static_cast<ssize_t>(bufferSize));

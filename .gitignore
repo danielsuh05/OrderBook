@@ -1,4 +1,5 @@
 cmake-build-debug/
+trash_data.txt
 *ninja*
 ./gtests/gtests_run
 .idea/
