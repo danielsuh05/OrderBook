@@ -1,5 +1,6 @@
 cmake-build-debug/
 trash_data.txt
+short_data.txt
 *ninja*
 ./gtests/gtests_run
 .idea/
@@ -59,3 +60,5 @@ CMakeUserPresets.json
 *.exe
 *.out
 *.app
+*.gz
+*.py

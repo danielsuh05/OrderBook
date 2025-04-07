@@ -31,7 +31,8 @@ enum class ITCHMessageType {
 	DLCR_MESSAGE = 'O'
 };
 
-consteval int getMessageType(ITCHMessageType type) {
+// FIX LATER
+inline size_t getMessageLength(ITCHMessageType type) {
 	switch(type) {
 		case ITCHMessageType::SYSTEM_EVENT:
 			return 12;
@@ -79,6 +80,8 @@ consteval int getMessageType(ITCHMessageType type) {
 			return 20;
 		case ITCHMessageType::DLCR_MESSAGE:
 			return 48;
+		default:
+			return 0;
 	}
 }
 

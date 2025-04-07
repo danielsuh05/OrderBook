@@ -11,12 +11,12 @@ class ITCHParser {
 public:
 	ITCHParser(std::size_t bufferSize, int fd);
 
-	void parseBuffer();
+	size_t parseBuffer();
 
+	Buffer& getBuffer();
 
-	// TODO MAKE THIS CLEANER
-	Buffer buffer_;
 private:
+	Buffer buffer_;
 };
 
 #endif //SIMPLEORDERBOOK_INCLUDE_ITCHPARSER_H_
