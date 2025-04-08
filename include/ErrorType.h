@@ -7,16 +7,18 @@
 #include <iostream>
 
 enum class ErrorType {
-	Parsing,
-	Reading,
+  Parsing,
+  Reading,
 };
 
 inline std::ostream &operator<<(std::ostream &os, ErrorType e) {
-	switch (e) {
-		case ErrorType::Parsing: return (os << "PARSING");
-		case ErrorType::Reading: return (os << "READING");
-	}
-	return os;
+  switch (e) {
+    case ErrorType::Parsing:
+      return (os << "PARSING");
+    case ErrorType::Reading:
+      return (os << "READING");
+  }
+  return os;
 }
 
-#endif //SIMPLEORDERBOOK_ERRORTYPE_H
+#endif  // SIMPLEORDERBOOK_ERRORTYPE_H

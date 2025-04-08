@@ -6,39 +6,40 @@
 #define SIMPLEORDERBOOK_ERRORHANDLER_H
 
 #include <cstdint>
-#include <string_view>
 #include <mutex>
 #include <queue>
+#include <string_view>
 #include <thread>
-#include "ITCHOrder.h"
+
 #include "Error.h"
+#include "ITCHOrder.h"
 
 /**
  * @brief Singleton, handles errors on a separate thread
  */
 class ErrorHandler {
  public:
-	static ErrorHandler &getInstance();
+  static ErrorHandler &getInstance();
 
-	void postError(const Error &error);
-	void processErrors();
+  void postError(const Error &error);
+  void processErrors();
 
-	~ErrorHandler();
+  ~ErrorHandler();
 
-	ErrorHandler(const ErrorHandler &) = delete;
-	ErrorHandler &operator=(const ErrorHandler &) = delete;
+  ErrorHandler(const ErrorHandler &) = delete;
+  ErrorHandler &operator=(const ErrorHandler &) = delete;
 
-	ErrorHandler(const ErrorHandler &&) = delete;
-	ErrorHandler &operator=(const ErrorHandler &&) = delete;
+  ErrorHandler(const ErrorHandler &&) = delete;
+  ErrorHandler &operator=(const ErrorHandler &&) = delete;
 
  private:
-	ErrorHandler();
+  ErrorHandler();
 
-	std::condition_variable cv_{};
-	std::mutex mutex_{};
-	std::atomic<bool> isRunning_{};
-	std::queue<Error> errors_{};
-	std::thread thread_{};
+  std::condition_variable cv_{};
+  std::mutex mutex_{};
+  std::atomic<bool> isRunning_{};
+  std::queue<Error> errors_{};
+  std::thread thread_{};
 };
 
-#endif //SIMPLEORDERBOOK_ERRORHANDLER_H
+#endif  // SIMPLEORDERBOOK_ERRORHANDLER_H

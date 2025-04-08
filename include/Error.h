@@ -5,14 +5,15 @@
 #ifndef SIMPLEORDERBOOK_ERROR_H
 #define SIMPLEORDERBOOK_ERROR_H
 
-#include "ErrorType.h"
 #include <string>
 #include <string_view>
 
+#include "ErrorType.h"
+
 struct Error {
-	std::string errorMessage_;
-	std::optional<int32_t> orderId_;
-	ErrorType errorType_;
+  std::string errorMessage_;
+  std::optional<int32_t> orderId_;
+  ErrorType errorType_;
 };
 
-#endif //SIMPLEORDERBOOK_ERROR_H
+#endif  // SIMPLEORDERBOOK_ERROR_H

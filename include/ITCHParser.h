@@ -8,16 +8,17 @@
 #include "Buffer.h"
 
 class ITCHParser {
-public:
-	ITCHParser(std::size_t bufferSize, int fd);
+ public:
+  ITCHParser(std::size_t bufferSize, int fd);
 
-	size_t parseBuffer(char overflowBuf[51], size_t overflowBufSize, size_t numBytesReceived);
+  size_t parseBuffer(char overflowBuf[51], size_t overflowBufSize,
+                     size_t numBytesReceived);
 
-	Buffer& getBuffer();
-	uint64_t numMessages{0};
+  Buffer &getBuffer();
+  uint64_t numMessages{0};
 
-private:
-	Buffer buffer_;
+ private:
+  Buffer buffer_;
 };
 
-#endif //SIMPLEORDERBOOK_INCLUDE_ITCHPARSER_H_
+#endif  // SIMPLEORDERBOOK_INCLUDE_ITCHPARSER_H_
