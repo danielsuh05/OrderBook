@@ -18,7 +18,7 @@ struct Buffer {
 	explicit Buffer(size_t size, int fd);
 	~Buffer();
 
-	bool read(size_t start, char bufferData[]);
+	size_t read();
 
 	void swapBufferPtrs(Buffer& otherBuf);
 };

@@ -9,6 +9,9 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 set(BOOST_ROOT "/opt/homebrew/opt/boost")
 set(Boost_NO_SYSTEM_PATHS TRUE)
+
+#add_definitions(-DDEBUG)
+
 find_package(Boost)
 include_directories(${Boost_INCLUDE_DIRS})
 

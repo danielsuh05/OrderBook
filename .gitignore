@@ -1,4 +1,5 @@
 cmake-build-debug/
+itch/
 trash_data.txt
 short_data.txt
 *ninja*
@@ -14,6 +15,8 @@ lib/
 CMakeCache.txt
 cmake_install.cmake
 *.ninja
+
+SimpleOrderBook
 
 CMakeLists.txt.user
 CMakeCache.txt

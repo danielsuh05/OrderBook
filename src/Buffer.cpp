@@ -13,23 +13,14 @@ Buffer::Buffer(size_t size, int fd)
 /**
  * @brief Reads in a buffer from the given file descriptor. Will return false if no more data to be read in, returns true if should continue
  */
-bool Buffer::read(size_t start, char parserData[]) {
-	// TODO: CHECK THIS
-	std::memcpy(ptr_, parserData + start, size_ - start);
+size_t Buffer::read() {
+	ssize_t bytes = ::read(fd_, ptr_, size_);
 
-	ssize_t bytes = ::read(fd_, ptr_ + (size_ - start), start);
-
-	printf("GOT %d BYTES FROM %d\n", bytes, ptr_);
-
-	if (bytes > 0) {
-		std::cout << +ptr_[0] << " " << +ptr_[1] << " " << +ptr_[2] << "\n";
-		return true;
-	} else if (bytes < 0) {
+	if (bytes < 0) {
 		ErrorHandler::getInstance().postError(Error{"Failure reading the file", std::nullopt, ErrorType::Reading});
-		return false;
-	} else {
-		return false;
 	}
+
+	return bytes;
 }
 
 /**
