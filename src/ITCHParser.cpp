@@ -7,12 +7,24 @@
 #include "ErrorHandler.h"
 #include "ITCHMessageType.h"
 
+/**
+ * @brief Creates an ITCHParser instance. Requires a buffer to read from, parameters for this passed in
+ * @param bufferSize The size of the internal buffer
+ * @param fd The file descriptor number of the internal buffer
+ */
 ITCHParser::ITCHParser(std::size_t bufferSize, int fd)
 		: buffer_ { Buffer { bufferSize, fd } } {}
 
+/**
+ * @brief Parses the internal buffer of the ITCHParser object.
+ * @param overflowBuf The extra bytes that were left behind when parsing the previous buffer
+ * @param oldOverflowBufSize The number of bytes that were left behind when parsing the previous buffer
+ * @param numBytesReceived The number of bytes to parse
+ */
 size_t ITCHParser::parseBuffer(char overflowBuf[51], size_t oldOverflowBufSize, size_t numBytesReceived) {
 	const size_t totalSize = oldOverflowBufSize + numBytesReceived;
 
+	// Will get a byte depending on if it is in the previous buffer or the current buffer
 	auto getByte = [&](size_t i) -> char {
 		if (i < oldOverflowBufSize) {
 			return overflowBuf[i];
@@ -24,6 +36,7 @@ size_t ITCHParser::parseBuffer(char overflowBuf[51], size_t oldOverflowBufSize, 
 
 	size_t pos = 0;
 
+	// Always need to read in 2 bytes for the length of the next message
 	while(pos + 2 < totalSize) {
 		const char code = getByte(pos + 2);
 		const auto type = static_cast<ITCHMessageType>(code);
@@ -42,6 +55,7 @@ size_t ITCHParser::parseBuffer(char overflowBuf[51], size_t oldOverflowBufSize, 
 		}
 		numMessages++;
 
+		// Do casework based on the type of the message. We only care about ones that affect the order book
 		switch(type) {
 			case ITCHMessageType::ADD_ORDER:
 			case ITCHMessageType::ADD_ORDER_MPID:
@@ -84,34 +98,40 @@ size_t ITCHParser::parseBuffer(char overflowBuf[51], size_t oldOverflowBufSize, 
 				break;
 		}
 
+		// 2 for the length + length of message
 		pos += 2 + messageLen;
-	}
-
-	const size_t numRemaining = totalSize - pos;
-
-	if (numRemaining == 0) {
-		return 0;
 	}
 
 #ifdef DEBUG
 	assert(numRemaining <= Constants::kOverflowBufferSize);
 #endif
 
-	size_t bytesToCopy = numRemaining;
+	// Number of remaining bytes that have not been parsed
+	const size_t bytesToCopy = totalSize - pos;
+
+	if (bytesToCopy == 0) {
+		return 0;
+	}
 
 	if (pos < oldOverflowBufSize) {
 		size_t numAvailableBytes = oldOverflowBufSize - pos;
 		size_t bytesFromNewBuffer = bytesToCopy - numAvailableBytes;
 
+		// Copy into overflow buffer
 		memcpy(overflowBuf + numAvailableBytes, buffer_.ptr_, bytesFromNewBuffer);
 	} else {
 		size_t start = pos - oldOverflowBufSize;
+
+		// Copy into overflow buffer
 		memcpy(overflowBuf, buffer_.ptr_ + start, bytesToCopy);
 	}
 
 	return bytesToCopy;
 }
 
+/**
+ * @brief Gets the underlying buffer. Used for swapping buffers.
+ */
 Buffer& ITCHParser::getBuffer() {
 	return buffer_;
 }

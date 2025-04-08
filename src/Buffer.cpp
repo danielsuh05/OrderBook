@@ -4,6 +4,11 @@
 #include <unistd.h>
 #include <iostream>
 
+/**
+ * @brief Creates a new buffer with a size and a file descriptor which it reads from
+ * @param size The size in bytes for how big the buffer should be
+ * @param fd The file descriptor number from which to read from
+ */
 Buffer::Buffer(size_t size, int fd)
 		: ptr_(new char[size]),
 		  size_(size),
@@ -11,11 +16,13 @@ Buffer::Buffer(size_t size, int fd)
 {}
 
 /**
- * @brief Reads in a buffer from the given file descriptor. Will return false if no more data to be read in, returns true if should continue
+ * @brief Reads in a buffer from the given file descriptor.
+ * @return The number of bytes read in.
  */
 size_t Buffer::read() {
 	ssize_t bytes = ::read(fd_, ptr_, size_);
 
+	// If failed to read
 	if (bytes < 0) {
 		ErrorHandler::getInstance().postError(Error{"Failure reading the file", std::nullopt, ErrorType::Reading});
 	}

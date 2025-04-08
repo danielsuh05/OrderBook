@@ -5,6 +5,9 @@
 #ifndef SIMPLEORDERBOOK_INCLUDE_ITCHMESSAGETYPE_H_
 #define SIMPLEORDERBOOK_INCLUDE_ITCHMESSAGETYPE_H_
 
+/**
+ * @brief Each type of ITCH message and their corresponding letter according to the ITCH 5.0 protocol
+ */
 enum class ITCHMessageType {
 	SYSTEM_EVENT = 'S',
 	STOCK_DIRECTORY = 'R',
@@ -31,7 +34,9 @@ enum class ITCHMessageType {
 	DLCR_MESSAGE = 'O'
 };
 
-// FIX LATER
+/**
+ * @brief Gets the message length based on the type of message
+ */
 inline size_t getMessageLength(ITCHMessageType type) {
 	switch(type) {
 		case ITCHMessageType::SYSTEM_EVENT:

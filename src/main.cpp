@@ -27,10 +27,12 @@ int main() {
 			size_t bytesRead = buffer.read();
 			numBytesReceived.store(bytesRead);
 
+			// Swap the two buffers so the parser can parse it
 			buffer.swapBufferPtrs(parser.getBuffer());
 
 			signal_to_process.release();
 
+			// If parsed the last buffer, notify the parser
 			if (bytesRead < Constants::kBufferSize) {
 				readingDone.store(true);
 				break;
@@ -49,6 +51,7 @@ int main() {
 			size_t newOverflowSize = parser.parseBuffer(overflowBuf, currentOldOverflowSize, currentNumBytes);
 			overflowBufSize.store(newOverflowSize);
 
+			// If parsed last buffer, then exit out
 			if (isReadingDone && currentNumBytes < Constants::kBufferSize) {
 				break;
 			}

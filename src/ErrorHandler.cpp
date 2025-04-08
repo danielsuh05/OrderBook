@@ -53,8 +53,5 @@ void ErrorHandler::processErrors() {
 			          << error.orderId_.value_or(-1) << "]: "
 			          << error.errorMessage_ << "\n";
 		}
-
-		// Optional: add a small delay to prevent busy-waiting from hogging the CPU.
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 }
