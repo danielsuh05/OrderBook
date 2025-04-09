@@ -17,11 +17,12 @@ class ITCHParser {
   Buffer &getBuffer();
   uint64_t numMessages{0};
 
-	char getByte(size_t i) const;
+  char getByte(size_t i) const;
 
-	Buffer buffer_;
-	char overflowBuf[Constants::kOverflowBufferSize]{};
-	size_t overflowBufSize{0};
+  // allow access for efficiency
+  Buffer buffer_;
+  char overflowBuf[Constants::kOverflowBufferSize]{};
+  size_t overflowBufSize{0};
 };
 
 #endif  // SIMPLEORDERBOOK_INCLUDE_ITCHPARSER_H_

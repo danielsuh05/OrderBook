@@ -8,8 +8,8 @@
 #include <cstdint>
 
 #include "ITCHMessageType.h"
-#include "Side.h"
 #include "ITCHParser.h"
+#include "Side.h"
 
 template <ITCHMessageType T>
 struct ITCHOrder;
@@ -29,7 +29,7 @@ struct ITCHOrder<ITCHMessageType::ADD_ORDER> {
   inline ITCHOrder(uint16_t stockLocate, uint64_t timestamp, uint64_t id,
                    char side, uint32_t volume, uint32_t price);
 
-	inline static ITCHOrder parse(const ITCHParser& itchparser, size_t pos);
+  inline static ITCHOrder parse(const ITCHParser& itchparser, size_t pos);
 };
 
 /**
@@ -63,7 +63,7 @@ struct ITCHOrder<ITCHMessageType::CANCEL_ORDER> {
   inline ITCHOrder(uint16_t stockLocate, uint64_t timestamp, uint64_t id,
                    uint32_t numCancelled);
 
-	inline static ITCHOrder parse(const ITCHParser& itchparser, size_t pos);
+  inline static ITCHOrder parse(const ITCHParser& itchparser, size_t pos);
 };
 
 /**
@@ -78,7 +78,7 @@ struct ITCHOrder<ITCHMessageType::DELETE_ORDER> {
 
   inline ITCHOrder(uint16_t stockLocate, uint64_t timestamp, uint64_t id);
 
-	inline static ITCHOrder parse(const ITCHParser& itchparser, size_t pos);
+  inline static ITCHOrder parse(const ITCHParser& itchparser, size_t pos);
 };
 
 /**
@@ -96,7 +96,7 @@ struct ITCHOrder<ITCHMessageType::REPLACE_ORDER> {
   inline ITCHOrder(uint16_t stockLocate, uint64_t timestamp, uint64_t oldId,
                    uint64_t newId, uint32_t quantity, uint32_t price);
 
-	inline static ITCHOrder parse(const ITCHParser& itchparser, size_t pos);
+  inline static ITCHOrder parse(const ITCHParser& itchparser, size_t pos);
 };
 
 #include "ITCHOrder.tpp"

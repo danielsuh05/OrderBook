@@ -17,15 +17,14 @@
 ITCHParser::ITCHParser(std::size_t bufferSize, int fd)
     : buffer_{Buffer{bufferSize, fd}} {}
 
-
 // Will get a byte depending on if it is in the previous buffer or the
 // current buffer
 char ITCHParser::getByte(size_t i) const {
-	if (i < overflowBufSize) {
-		return overflowBuf[i];
-	} else {
-		return buffer_.ptr_[i - overflowBufSize];
-	}
+  if (i < overflowBufSize) {
+    return overflowBuf[i];
+  } else {
+    return buffer_.ptr_[i - overflowBufSize];
+  }
 };
 
 /**
@@ -62,26 +61,31 @@ size_t ITCHParser::parseBuffer(size_t numBytesReceived) {
     switch (type) {
       case ITCHMessageType::ADD_ORDER:
       case ITCHMessageType::ADD_ORDER_MPID: {
-	      auto order = ITCHOrder<ITCHMessageType::ADD_ORDER>::parse(*this, pos + 2);
-	      break;
+        auto order =
+            ITCHOrder<ITCHMessageType::ADD_ORDER>::parse(*this, pos + 2);
+        break;
       }
       case ITCHMessageType::EXECUTE_ORDER:
       case ITCHMessageType::EXECUTE_ORDER_PRICE: {
-	      auto order = ITCHOrder<ITCHMessageType::EXECUTE_ORDER>::parse(*this, pos + 2);
-	      break;
+        auto order =
+            ITCHOrder<ITCHMessageType::EXECUTE_ORDER>::parse(*this, pos + 2);
+        break;
       }
       case ITCHMessageType::CANCEL_ORDER: {
-	      auto order = ITCHOrder<ITCHMessageType::CANCEL_ORDER>::parse(*this, pos + 2);
-	      break;
-			}
+        auto order =
+            ITCHOrder<ITCHMessageType::CANCEL_ORDER>::parse(*this, pos + 2);
+        break;
+      }
       case ITCHMessageType::DELETE_ORDER: {
-	      auto order = ITCHOrder<ITCHMessageType::DELETE_ORDER>::parse(*this, pos + 2);
-	      break;
-			}
+        auto order =
+            ITCHOrder<ITCHMessageType::DELETE_ORDER>::parse(*this, pos + 2);
+        break;
+      }
       case ITCHMessageType::REPLACE_ORDER: {
-	      auto order = ITCHOrder<ITCHMessageType::REPLACE_ORDER>::parse(*this, pos + 2);
-	      break;
-			}
+        auto order =
+            ITCHOrder<ITCHMessageType::REPLACE_ORDER>::parse(*this, pos + 2);
+        break;
+      }
       case ITCHMessageType::SYSTEM_EVENT:
       case ITCHMessageType::STOCK_DIRECTORY:
       case ITCHMessageType::TRADING_ACTION:
@@ -119,7 +123,7 @@ size_t ITCHParser::parseBuffer(size_t numBytesReceived) {
   const size_t bytesToCopy = totalSize - pos;
 
   if (bytesToCopy == 0) {
-		overflowBufSize = 0;
+    overflowBufSize = 0;
     return 0;
   }
 
@@ -136,7 +140,7 @@ size_t ITCHParser::parseBuffer(size_t numBytesReceived) {
     memcpy(overflowBuf, buffer_.ptr_ + start, bytesToCopy);
   }
 
-	overflowBufSize = bytesToCopy;
+  overflowBufSize = bytesToCopy;
 
   return bytesToCopy;
 }
