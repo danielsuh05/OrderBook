@@ -7,6 +7,7 @@
 
 #include "Buffer.h"
 #include "Constants.h"
+#include "OrderBook.h"
 
 class ITCHParser {
  public:

@@ -7,6 +7,7 @@
 #include "Constants.h"
 #include "ErrorHandler.h"
 #include "ITCHMessageType.h"
+#include "OrderBook.h"
 
 /**
  * @brief Creates an ITCHParser instance. Requires a buffer to read from,
@@ -63,6 +64,7 @@ size_t ITCHParser::parseBuffer(size_t numBytesReceived) {
       case ITCHMessageType::ADD_ORDER_MPID: {
         auto order =
             ITCHOrder<ITCHMessageType::ADD_ORDER>::parse(*this, pos + 2);
+
         break;
       }
       case ITCHMessageType::EXECUTE_ORDER:

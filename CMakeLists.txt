@@ -19,14 +19,23 @@ include_directories(include)
 
 set(SOURCES
         src/main.cpp
+        src/OrderBookManager.cpp
         src/ErrorHandler.cpp
         src/Side.cpp
         src/Buffer.cpp
         src/ITCHParser.cpp
+        src/OrderBook.cpp
 )
 
 set(HEADERS
+        include/OrderBookManager.h
+        include/OrderMap.h
+        include/Pool.h
+        include/Order.h
+        include/LevelPtr.h
+        include/Level.h
         include/ITCHOrder.h
+        include/OrderBook.h
         include/ITCHParser.h
         include/Side.h
         include/Buffer.h

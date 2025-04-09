@@ -7,6 +7,7 @@
 #include "Buffer.h"
 #include "Constants.h"
 #include "ITCHParser.h"
+#include "OrderBook.h"
 
 int main() {
   auto startTime = std::chrono::high_resolution_clock::now();
