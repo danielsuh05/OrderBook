@@ -20,7 +20,6 @@ int main() {
   std::atomic<size_t> numBytesReceived{Constants::kBufferSize};
   std::atomic<size_t> overflowBufSize{0};
   std::atomic<bool> readingDone{false};
-  char overflowBuf[Constants::kOverflowBufferSize]{};
 
   auto readBuffer = [&]() {
     while (true) {
@@ -46,11 +45,9 @@ int main() {
       signal_to_process.acquire();
 
       size_t currentNumBytes = numBytesReceived.load();
-      size_t currentOldOverflowSize = overflowBufSize.load();
       bool isReadingDone = readingDone.load();
 
-      size_t newOverflowSize = parser.parseBuffer(
-          overflowBuf, currentOldOverflowSize, currentNumBytes);
+      size_t newOverflowSize = parser.parseBuffer(currentNumBytes);
       overflowBufSize.store(newOverflowSize);
 
       // If parsed last buffer, then exit out

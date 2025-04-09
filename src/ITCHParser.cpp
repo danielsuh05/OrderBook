@@ -17,28 +17,23 @@
 ITCHParser::ITCHParser(std::size_t bufferSize, int fd)
     : buffer_{Buffer{bufferSize, fd}} {}
 
+
+// Will get a byte depending on if it is in the previous buffer or the
+// current buffer
+char ITCHParser::getByte(size_t i) const {
+	if (i < overflowBufSize) {
+		return overflowBuf[i];
+	} else {
+		return buffer_.ptr_[i - overflowBufSize];
+	}
+};
+
 /**
  * @brief Parses the internal buffer of the ITCHParser object.
- * @param overflowBuf The extra bytes that were left behind when parsing the
- * previous buffer
- * @param oldOverflowBufSize The number of bytes that were left behind when
- * parsing the previous buffer
  * @param numBytesReceived The number of bytes to parse
  */
-size_t ITCHParser::parseBuffer(char overflowBuf[51], size_t oldOverflowBufSize,
-                               size_t numBytesReceived) {
-  const size_t totalSize = oldOverflowBufSize + numBytesReceived;
-
-  // Will get a byte depending on if it is in the previous buffer or the
-  // current buffer
-  auto getByte = [&](size_t i) -> char {
-    if (i < oldOverflowBufSize) {
-      return overflowBuf[i];
-    } else {
-      assert(i - oldOverflowBufSize < numBytesReceived);
-      return buffer_.ptr_[i - oldOverflowBufSize];
-    }
-  };
+size_t ITCHParser::parseBuffer(size_t numBytesReceived) {
+  const size_t totalSize = overflowBufSize + numBytesReceived;
 
   size_t pos = 0;
 
@@ -66,26 +61,27 @@ size_t ITCHParser::parseBuffer(char overflowBuf[51], size_t oldOverflowBufSize,
     // that affect the order book
     switch (type) {
       case ITCHMessageType::ADD_ORDER:
-      case ITCHMessageType::ADD_ORDER_MPID:
-        //				std::cout << "GOT ADD ORDER COMMAND\n";
-        break;
+      case ITCHMessageType::ADD_ORDER_MPID: {
+	      auto order = ITCHOrder<ITCHMessageType::ADD_ORDER>::parse(*this, pos + 2);
+	      break;
+      }
       case ITCHMessageType::EXECUTE_ORDER:
-      case ITCHMessageType::EXECUTE_ORDER_PRICE:
-        //				std::cout << "GOT EXECUTE ORDER
-        // COMMAND\n";
-        break;
-      case ITCHMessageType::CANCEL_ORDER:
-        //				std::cout << "GOT CANCEL ORDER
-        // COMMAND\n";
-        break;
-      case ITCHMessageType::DELETE_ORDER:
-        //				std::cout << "GOT DELETE ORDER
-        // COMMAND\n";
-        break;
-      case ITCHMessageType::REPLACE_ORDER:
-        //				std::cout << "GOT REPLACE ORDER
-        // COMMAND\n";
-        break;
+      case ITCHMessageType::EXECUTE_ORDER_PRICE: {
+	      auto order = ITCHOrder<ITCHMessageType::EXECUTE_ORDER>::parse(*this, pos + 2);
+	      break;
+      }
+      case ITCHMessageType::CANCEL_ORDER: {
+	      auto order = ITCHOrder<ITCHMessageType::CANCEL_ORDER>::parse(*this, pos + 2);
+	      break;
+			}
+      case ITCHMessageType::DELETE_ORDER: {
+	      auto order = ITCHOrder<ITCHMessageType::DELETE_ORDER>::parse(*this, pos + 2);
+	      break;
+			}
+      case ITCHMessageType::REPLACE_ORDER: {
+	      auto order = ITCHOrder<ITCHMessageType::REPLACE_ORDER>::parse(*this, pos + 2);
+	      break;
+			}
       case ITCHMessageType::SYSTEM_EVENT:
       case ITCHMessageType::STOCK_DIRECTORY:
       case ITCHMessageType::TRADING_ACTION:
@@ -123,21 +119,24 @@ size_t ITCHParser::parseBuffer(char overflowBuf[51], size_t oldOverflowBufSize,
   const size_t bytesToCopy = totalSize - pos;
 
   if (bytesToCopy == 0) {
+		overflowBufSize = 0;
     return 0;
   }
 
-  if (pos < oldOverflowBufSize) {
-    size_t numAvailableBytes = oldOverflowBufSize - pos;
+  if (pos < overflowBufSize) {
+    size_t numAvailableBytes = overflowBufSize - pos;
     size_t bytesFromNewBuffer = bytesToCopy - numAvailableBytes;
 
     // Copy into overflow buffer
     memcpy(overflowBuf + numAvailableBytes, buffer_.ptr_, bytesFromNewBuffer);
   } else {
-    size_t start = pos - oldOverflowBufSize;
+    size_t start = pos - overflowBufSize;
 
     // Copy into overflow buffer
     memcpy(overflowBuf, buffer_.ptr_ + start, bytesToCopy);
   }
+
+	overflowBufSize = bytesToCopy;
 
   return bytesToCopy;
 }
