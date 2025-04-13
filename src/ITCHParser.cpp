@@ -16,15 +16,15 @@
  * @param fd The file descriptor number of the internal buffer
  */
 ITCHParser::ITCHParser(std::size_t bufferSize, int fd)
-    : buffer_{Buffer{bufferSize, fd}} {}
+    : buffer_{Buffer{bufferSize, fd}}, book_{} {}
 
 // Will get a byte depending on if it is in the previous buffer or the
 // current buffer
 char ITCHParser::getByte(size_t i) const {
-  if (i < overflowBufSize) {
-    return overflowBuf[i];
+  if (i < overflowBufSize_) {
+    return overflowBuf_[i];
   } else {
-    return buffer_.ptr_[i - overflowBufSize];
+    return buffer_.ptr_[i - overflowBufSize_];
   }
 };
 
@@ -33,7 +33,7 @@ char ITCHParser::getByte(size_t i) const {
  * @param numBytesReceived The number of bytes to parse
  */
 size_t ITCHParser::parseBuffer(size_t numBytesReceived) {
-  const size_t totalSize = overflowBufSize + numBytesReceived;
+  const size_t totalSize = overflowBufSize_ + numBytesReceived;
 
   size_t pos = 0;
 
@@ -65,27 +65,36 @@ size_t ITCHParser::parseBuffer(size_t numBytesReceived) {
         auto order =
             ITCHOrder<ITCHMessageType::ADD_ORDER>::parse(*this, pos + 2);
 
+				book_.addOrder(order.id_, static_cast<int>(order.price_), order.quantity_, order.side_, order.stockLocate_);
         break;
       }
       case ITCHMessageType::EXECUTE_ORDER:
       case ITCHMessageType::EXECUTE_ORDER_PRICE: {
         auto order =
             ITCHOrder<ITCHMessageType::EXECUTE_ORDER>::parse(*this, pos + 2);
+
+	      book_.executeOrder(order.id_, order.quantity_);
         break;
       }
       case ITCHMessageType::CANCEL_ORDER: {
         auto order =
             ITCHOrder<ITCHMessageType::CANCEL_ORDER>::parse(*this, pos + 2);
+
+				book_.cancelOrder(order.id_, order.numCancelled_);
         break;
       }
       case ITCHMessageType::DELETE_ORDER: {
         auto order =
             ITCHOrder<ITCHMessageType::DELETE_ORDER>::parse(*this, pos + 2);
+
+				book_.deleteOrder(order.id_);
         break;
       }
       case ITCHMessageType::REPLACE_ORDER: {
         auto order =
             ITCHOrder<ITCHMessageType::REPLACE_ORDER>::parse(*this, pos + 2);
+
+	      book_.replaceOrder(order.oldId_, order.newId_, order.quantity_, static_cast<int32_t>(order.price_));
         break;
       }
       case ITCHMessageType::SYSTEM_EVENT:
@@ -125,24 +134,24 @@ size_t ITCHParser::parseBuffer(size_t numBytesReceived) {
   const size_t bytesToCopy = totalSize - pos;
 
   if (bytesToCopy == 0) {
-    overflowBufSize = 0;
+	  overflowBufSize_ = 0;
     return 0;
   }
 
-  if (pos < overflowBufSize) {
-    size_t numAvailableBytes = overflowBufSize - pos;
+  if (pos < overflowBufSize_) {
+    size_t numAvailableBytes = overflowBufSize_ - pos;
     size_t bytesFromNewBuffer = bytesToCopy - numAvailableBytes;
 
     // Copy into overflow buffer
-    memcpy(overflowBuf + numAvailableBytes, buffer_.ptr_, bytesFromNewBuffer);
+    memcpy(overflowBuf_ + numAvailableBytes, buffer_.ptr_, bytesFromNewBuffer);
   } else {
-    size_t start = pos - overflowBufSize;
+    size_t start = pos - overflowBufSize_;
 
     // Copy into overflow buffer
-    memcpy(overflowBuf, buffer_.ptr_ + start, bytesToCopy);
+    memcpy(overflowBuf_, buffer_.ptr_ + start, bytesToCopy);
   }
 
-  overflowBufSize = bytesToCopy;
+	overflowBufSize_ = bytesToCopy;
 
   return bytesToCopy;
 }

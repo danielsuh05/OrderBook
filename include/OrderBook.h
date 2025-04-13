@@ -8,24 +8,29 @@
 #include <cstdint>
 #include <system_error>
 #include <vector>
+#include <iostream>
 
 #include "Order.h"
 #include "LevelPtr.h"
+#include "Level.h"
+#include "Pool.h"
+#include "Side.h"
 
 class OrderBook {
  public:
-	void addOrder(uint32_t oid, int32_t price, uint32_t qty) {
-	 	throw std::logic_error("Not Implemented");
-	}
+	OrderBook();
 
-	void deleteOrder(const Order& order) {
-		throw std::logic_error("Not Implemented");
-	}
+	void addOrder(Order& order, int32_t price, uint32_t qty, Side side, Pool<Level>& pool);
+
+	void deleteOrder(Order& order, Pool<Level>& pool);
 
 	// Reduces order by qty
-	void cancelOrder(const Order& order, uint32_t qty) {
-		throw std::logic_error("Not Implemented");
-	}
+	void cancelOrder(Order& order, uint32_t qty, Pool<Level>& pool);
+
+	void print(Pool<Level>& pool) const;
+
+	uint64_t numIterations{0};
+	uint64_t times{0};
 
  private:
 	std::vector<LevelPtr> asks;

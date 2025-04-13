@@ -19,6 +19,22 @@ class Pool {
 		return data_[idx];
 	}
 
+	inline uint32_t alloc() {
+		if(freeList_.empty()) {
+			auto ret = data_.size();
+			data_.push_back(T());
+			return ret;
+		} else {
+			uint32_t freeIdx = freeList_.back();
+			freeList_.pop_back();
+			return freeIdx;
+		}
+	}
+
+	inline void free(uint32_t idx) {
+		freeList_.push_back(idx);
+	}
+
  private:
 	std::vector<T> data_;
 	std::vector<uint32_t> freeList_;

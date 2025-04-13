@@ -12,14 +12,14 @@ inline T readBytes(const ITCHParser& p, size_t offset, size_t numBytes) {
 	char* dest = reinterpret_cast<char*>(&val);
 	const size_t endOffset = offset + numBytes;
 
-	if (endOffset <= p.overflowBufSize) {
-		memcpy(dest, p.overflowBuf + offset, numBytes);
-	} else if (offset >= p.overflowBufSize) {
-		memcpy(dest, p.buffer_.ptr_ + (offset - p.overflowBufSize), numBytes);
+	if (endOffset <= p.overflowBufSize_) {
+		memcpy(dest, p.overflowBuf_ + offset, numBytes);
+	} else if (offset >= p.overflowBufSize_) {
+		memcpy(dest, p.buffer_.ptr_ + (offset - p.overflowBufSize_), numBytes);
 	} else {
-		size_t bytesFromOverflow = p.overflowBufSize - offset;
+		size_t bytesFromOverflow = p.overflowBufSize_ - offset;
 		size_t bytesFromMain = numBytes - bytesFromOverflow;
-		memcpy(dest, p.overflowBuf + offset, bytesFromOverflow);
+		memcpy(dest, p.overflowBuf_ + offset, bytesFromOverflow);
 		memcpy(dest + bytesFromOverflow, p.buffer_.ptr_, bytesFromMain); // Read from start of main buffer
 	}
 	return val;
@@ -30,14 +30,14 @@ inline uint64_t read6Bytes(const ITCHParser& p, size_t offset) {
 	char tempBuf[numBytes];
 	const size_t endOffset = offset + numBytes;
 
-	if (endOffset <= p.overflowBufSize) {
-		memcpy(tempBuf, p.overflowBuf + offset, numBytes);
-	} else if (offset >= p.overflowBufSize) {
-		memcpy(tempBuf, p.buffer_.ptr_ + (offset - p.overflowBufSize), numBytes);
+	if (endOffset <= p.overflowBufSize_) {
+		memcpy(tempBuf, p.overflowBuf_ + offset, numBytes);
+	} else if (offset >= p.overflowBufSize_) {
+		memcpy(tempBuf, p.buffer_.ptr_ + (offset - p.overflowBufSize_), numBytes);
 	} else {
-		size_t bytesFromOverflow = p.overflowBufSize - offset;
+		size_t bytesFromOverflow = p.overflowBufSize_ - offset;
 		size_t bytesFromMain = numBytes - bytesFromOverflow;
-		memcpy(tempBuf, p.overflowBuf + offset, bytesFromOverflow);
+		memcpy(tempBuf, p.overflowBuf_ + offset, bytesFromOverflow);
 		memcpy(tempBuf + bytesFromOverflow, p.buffer_.ptr_, bytesFromMain);
 	}
 

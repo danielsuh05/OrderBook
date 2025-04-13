@@ -3,8 +3,8 @@
 Side charToSide(char c) {
   switch (c) {
     case 'B':
-      return Side::Buy;
+      return Side::Bid;
     case 'S':
-      return Side::Sell;
+      return Side::Ask;
   }
 }

@@ -8,7 +8,8 @@
 #include <cstdlib>
 
 namespace Constants {
-inline constexpr size_t kBufferSize = 1024 * 1000;  // in # of bytes
+inline constexpr size_t kBufferSizeKB = 5000;
+inline constexpr size_t kBufferSize = 1024 * kBufferSizeKB;
 inline constexpr size_t kFD = 0;                    // stdin
 inline constexpr size_t kOverflowBufferSize = 51;   // in # of bytes
 inline constexpr size_t kPoolSize = (1 << 20);

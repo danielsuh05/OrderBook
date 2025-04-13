@@ -8,6 +8,7 @@
 #include "Buffer.h"
 #include "Constants.h"
 #include "OrderBook.h"
+#include "OrderBookManager.h"
 
 class ITCHParser {
  public:
@@ -22,8 +23,9 @@ class ITCHParser {
 
   // allow access for efficiency
   Buffer buffer_;
-  char overflowBuf[Constants::kOverflowBufferSize]{};
-  size_t overflowBufSize{0};
+  char overflowBuf_[Constants::kOverflowBufferSize]{};
+  size_t overflowBufSize_{0};
+	OrderBookManager book_{};
 };
 
 #endif  // SIMPLEORDERBOOK_INCLUDE_ITCHPARSER_H_
