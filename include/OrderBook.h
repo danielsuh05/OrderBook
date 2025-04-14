@@ -16,6 +16,9 @@
 #include "Pool.h"
 #include "Side.h"
 
+/**
+ * @brief An Order Book for a specific stock.
+ */
 class OrderBook {
  public:
   OrderBook();

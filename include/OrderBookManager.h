@@ -16,6 +16,10 @@
 #include "Pool.h"
 #include "Side.h"
 
+/**
+ * The overarching obect that maintains all of the specific order books for each
+ * stock ticker.
+ */
 class OrderBookManager {
  public:
   OrderBookManager();
@@ -31,18 +35,6 @@ class OrderBookManager {
 
   void replaceOrder(uint32_t oldOid, uint32_t newOid, uint32_t newQuantity,
                     int32_t newPrice);
-
-  void print() {
-    std::cout << "Order Book Manager Contents:" << std::endl;
-
-    //		for (const auto& kv : books) {
-    //			uint32_t stockLocate = kv.first;
-    //			const OrderBook& book = kv.second;
-    //			std::cout << "Stock Locate " << stockLocate << ":\n";
-    //			book.print(pool);
-    //			std::cout << std::endl;
-    //		}
-  }
 
  private:
   std::vector<OrderBook> books;

@@ -10,6 +10,9 @@
 
 #include "ErrorType.h"
 
+/**
+ * @brief Represents some error. Can be tied to an order or be a general error.
+ */
 struct Error {
   std::string errorMessage_;
   std::optional<int32_t> orderId_;

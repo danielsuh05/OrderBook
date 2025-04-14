@@ -7,6 +7,9 @@
 
 #include <cstdint>
 
+/**
+ * @brief An Order associated with an order identifier.
+ */
 struct Order {
   uint32_t qty_;
   uint32_t levelIdx_;

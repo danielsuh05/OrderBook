@@ -11,11 +11,21 @@ OrderBook::OrderBook() {
   //	bids.reserve(10000);
 }
 
+/**
+ * @brief Adds an order for a specific stock locale. Will update quantity if
+ * price exists, else creates new price
+ * @param order The order to add to the book
+ * @param price The associated price with the order
+ * @param qty The quantity of the order
+ * @param side Whether the order is on the bid or ask side
+ * @param pool The allocating pool
+ */
 void OrderBook::addOrder(Order& order, int32_t price, uint32_t qty, Side side,
                          Pool<Level>& pool) {
   std::vector<LevelPtr>& levels = (side == Side::Ask ? asks : bids);
   price *= (side == Side::Ask ? -1 : 1);
 
+  // Binary search for price
   auto it = std::lower_bound(
       levels.begin(), levels.end(), price,
       [](const LevelPtr& level, int32_t p) { return level.price_ < p; });
@@ -25,6 +35,7 @@ void OrderBook::addOrder(Order& order, int32_t price, uint32_t qty, Side side,
   if (found) {
     order.levelIdx_ = it->idx_;
   } else {
+    // Allocate new Level on the pool
     uint32_t allocatedLevelIdx = pool.alloc();
     order.levelIdx_ = allocatedLevelIdx;
     pool.get(allocatedLevelIdx).price_ = price;
@@ -37,6 +48,11 @@ void OrderBook::addOrder(Order& order, int32_t price, uint32_t qty, Side side,
   pool.get(order.levelIdx_).qty_ += qty;
 }
 
+/**
+ * @brief Deletes an order for a specific stock locale.
+ * @param order The order to delete from the book
+ * @param pool The allocating pool
+ */
 void OrderBook::deleteOrder(Order& order, Pool<Level>& pool) {
   pool.get(order.levelIdx_).qty_ -= order.qty_;
   if (pool.get(order.levelIdx_).qty_ == 0) {
@@ -54,11 +70,22 @@ void OrderBook::deleteOrder(Order& order, Pool<Level>& pool) {
   }
 }
 
+/**
+ * @brief Cancel an order for a specific stock locale. Cancel means to reduce
+ * the order.
+ * @param order The order to delete from the book
+ * @param qty The amount to reduce the order by
+ * @param pool The allocating pool
+ */
 void OrderBook::cancelOrder(Order& order, uint32_t qty, Pool<Level>& pool) {
   pool.get(order.levelIdx_).qty_ -= qty;
   order.qty_ -= qty;
 }
 
+/**
+ * @brief Prints the specific order book.
+ * @param pool The allocating pool
+ */
 void OrderBook::print(Pool<Level>& pool) const {
   std::cout << "  Bids (Buy side):" << std::endl;
   if (bids.empty()) {

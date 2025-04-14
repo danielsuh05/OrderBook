@@ -7,6 +7,10 @@
 
 #include <cstdint>
 
+/**
+ * @brief Used for the ordered bids/asks. Contains an index to the Level in the
+ * pool of levels for fast access.
+ */
 struct LevelPtr {
   int32_t price_;
   uint32_t idx_;

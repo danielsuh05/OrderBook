@@ -8,6 +8,9 @@
 #include <cstdint>
 #include <vector>
 
+/**
+ * @brief A wrapper around a std::vector that keeps orders.
+ */
 template <typename T>
 class OrderMap {
  public:

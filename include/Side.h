@@ -5,6 +5,9 @@
 #ifndef SIMPLEORDERBOOK_SIDE_H
 #define SIMPLEORDERBOOK_SIDE_H
 
+/**
+ * @brief The side the order is on.
+ */
 enum class Side {
   Ask = 'S',
   Bid = 'B',

@@ -7,6 +7,10 @@
 
 #include <cstdint>
 
+/**
+ * @brief The level on the order book. Contains the quantity for each respective
+ * price.
+ */
 struct Level {
   // price_ < 0 if ask, price > 0 if bid
   int32_t price_;

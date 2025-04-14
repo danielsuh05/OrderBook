@@ -8,6 +8,9 @@
 #include <cstdint>
 #include <vector>
 
+/**
+ * @brief A memory manager/pool that allocates and frees different objects.
+ */
 template <typename T>
 class Pool {
  public:

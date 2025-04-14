@@ -10,6 +10,10 @@
 #include <cstring>
 #include <thread>
 
+/**
+ * @brief A buffer that holds some number of bytes. Has the ability to read from
+ * a file descriptor.
+ */
 struct Buffer {
   char *ptr_{};
   const size_t size_{};

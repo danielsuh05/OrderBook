@@ -26,6 +26,10 @@ ErrorHandler::~ErrorHandler() {
   }
 }
 
+/**
+ * @brief Post an error to the handler for it to process on a separate thread.
+ * @param error The Error object to process.
+ */
 void ErrorHandler::postError(const Error &error) {
   {
     // RAII lock
@@ -37,6 +41,10 @@ void ErrorHandler::postError(const Error &error) {
   cv_.notify_one();
 }
 
+/**
+ * @brief Start to process the errors that are on the queue. Requires that there
+ * are errors on the queue or will sleep
+ */
 void ErrorHandler::processErrors() {
   while (isRunning_) {
     std::queue<Error> localErrors;

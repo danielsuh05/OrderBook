@@ -10,6 +10,9 @@
 #include "OrderBook.h"
 #include "OrderBookManager.h"
 
+/**
+ * @brief A class that parses ITCH messages from its internal buffer.
+ */
 class ITCHParser {
  public:
   ITCHParser(std::size_t bufferSize, int fd);
