@@ -16,7 +16,6 @@ depth++ is an efficient multi-threaded order book written in C++. It uses ITCH a
     - Then, the main thread needs to copy the memory. Once it has done this, it should notify the buffer thread that it can overwrite the buffer. This is done through `saveAfterPos()`, which in essence copies the leftover memory that was not used because it was too small to the beginning and moves `pos` and `limit` so that the buffer can continue to read.
     - Then, we need a condition variable and a predicate between the main and buffer thread. This is because if the buffer finishes reading first, it needs to wait until the main thread is done with the parsing and order book operations. We need the predicate because otherwise the buffer thread may end up waiting forever as it missed the signal. I don't exactly like this implementation, it's something that I could definitely clean up in the future. 
     - Once the main thread is done parsing and doing order book operations, it will notify the buffer thread that it is done. The buffer thread will then return the buffer to the main thread and the process will continue. 
-  - I noted all the relationships and threads in the diagram below, which may be easier to read. 
 - Another important decision was how to implement the order book itself.
   - I took heavy insipiration from https://github.com/charles-cooper/itch-order-book/blob/master/order_book.h.  
   - There are several data structures:
@@ -34,3 +33,11 @@ depth++ is an efficient multi-threaded order book written in C++. It uses ITCH a
     - There are other minor differences, but the general idea of the `Pool` is the same. 
 - Cache locality should be pretty optimized here. All data structures are contiguous in memory. 
 - <strike>I believe this only works on MacOS systems because of the way I convert the ITCH big endian to the host byte order. WIP: convert to some other function that makes it cross-platform.</strike> -> I converted to using `boost::endian`.
+
+## Future Plans
+- The `gtests` are currently not working. I did test-driven development in the beginning, but it ended up holding me back a lot. I hope to fix these soon, so they all pass (it will not compile right now.)
+- I hope to provide a new interface for interacting with the order book. This could be through a network, a GUI, standard input, etc. 
+- I think it'd be interesting to create a networking aspect to the project where it receives orders over a network. That would entail an entirely different side of the project. 
+- There are definitely optimizations to be made. My order book implementation is somewhat slow and is definitely what the limiting factor is. It is not optimized for my hardware and there are some "magic numbers" in my `Constants.h` file that were simply grid-searched with no proper reasoning. 
+- I would like the `ErrorHandler` to be a lot more robust. Because the data I dealt with was completely ok, the `ErrorHandler` does not do much and is definitely underutilized. If there is an invalid message, the parser will get lost. 
+
