@@ -11,24 +11,23 @@
 template <typename T>
 class OrderMap {
  public:
-    inline void reserve(size_t n) {
-        data_.resize(n);
-        size_ = n;
-    }
-    
-    inline void ensureSize(size_t oid) {
-        if(oid >= size_) {
-            data_.resize(oid + 1);
-            size_ = oid + 1;
-        }
-    }
+  inline void reserve(size_t n) {
+    data_.resize(n);
+    size_ = n;
+  }
 
-	inline T& get(size_t oid) {
-		return data_[oid];
-	}
+  inline void ensureSize(size_t oid) {
+    if (oid >= size_) {
+      data_.resize(oid + 1);
+      size_ = oid + 1;
+    }
+  }
+
+  inline T& get(size_t oid) { return data_[oid]; }
+
  private:
-	std::vector<T> data_;
-	size_t size_;
+  std::vector<T> data_;
+  size_t size_;
 };
 
-#endif //SIMPLEORDERBOOK_INCLUDE_ORDERMAP_H_
+#endif  // SIMPLEORDERBOOK_INCLUDE_ORDERMAP_H_

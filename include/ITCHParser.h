@@ -25,7 +25,7 @@ class ITCHParser {
   Buffer buffer_;
   char overflowBuf_[Constants::kOverflowBufferSize]{};
   size_t overflowBufSize_{0};
-	OrderBookManager book_{};
+  OrderBookManager book_{};
 };
 
 #endif  // SIMPLEORDERBOOK_INCLUDE_ITCHPARSER_H_

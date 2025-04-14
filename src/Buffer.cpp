@@ -14,7 +14,7 @@
  * @param fd The file descriptor number from which to read from
  */
 Buffer::Buffer(size_t size, int fd) : size_(size), fd_(fd) {
-    ptr_ = new char[size];
+  ptr_ = new char[size];
 }
 
 /**

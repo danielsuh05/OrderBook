@@ -68,7 +68,7 @@ int main() {
 
   auto endTime = std::chrono::high_resolution_clock::now();
 
-//	parser.book_.print();
+  //	parser.book_.print();
 
   std::chrono::duration<double, std::milli> elapsed = endTime - startTime;
   std::cout << "Parsed " << parser.numMessages << " messages in "

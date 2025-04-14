@@ -65,7 +65,8 @@ size_t ITCHParser::parseBuffer(size_t numBytesReceived) {
         auto order =
             ITCHOrder<ITCHMessageType::ADD_ORDER>::parse(*this, pos + 2);
 
-				book_.addOrder(order.id_, static_cast<int>(order.price_), order.quantity_, order.side_, order.stockLocate_);
+        book_.addOrder(order.id_, static_cast<int>(order.price_),
+                       order.quantity_, order.side_, order.stockLocate_);
         break;
       }
       case ITCHMessageType::EXECUTE_ORDER:
@@ -73,28 +74,29 @@ size_t ITCHParser::parseBuffer(size_t numBytesReceived) {
         auto order =
             ITCHOrder<ITCHMessageType::EXECUTE_ORDER>::parse(*this, pos + 2);
 
-	      book_.executeOrder(order.id_, order.quantity_);
+        book_.executeOrder(order.id_, order.quantity_);
         break;
       }
       case ITCHMessageType::CANCEL_ORDER: {
         auto order =
             ITCHOrder<ITCHMessageType::CANCEL_ORDER>::parse(*this, pos + 2);
 
-				book_.cancelOrder(order.id_, order.numCancelled_);
+        book_.cancelOrder(order.id_, order.numCancelled_);
         break;
       }
       case ITCHMessageType::DELETE_ORDER: {
         auto order =
             ITCHOrder<ITCHMessageType::DELETE_ORDER>::parse(*this, pos + 2);
 
-				book_.deleteOrder(order.id_);
+        book_.deleteOrder(order.id_);
         break;
       }
       case ITCHMessageType::REPLACE_ORDER: {
         auto order =
             ITCHOrder<ITCHMessageType::REPLACE_ORDER>::parse(*this, pos + 2);
 
-	      book_.replaceOrder(order.oldId_, order.newId_, order.quantity_, static_cast<int32_t>(order.price_));
+        book_.replaceOrder(order.oldId_, order.newId_, order.quantity_,
+                           static_cast<int32_t>(order.price_));
         break;
       }
       case ITCHMessageType::SYSTEM_EVENT:
@@ -134,7 +136,7 @@ size_t ITCHParser::parseBuffer(size_t numBytesReceived) {
   const size_t bytesToCopy = totalSize - pos;
 
   if (bytesToCopy == 0) {
-	  overflowBufSize_ = 0;
+    overflowBufSize_ = 0;
     return 0;
   }
 
@@ -151,7 +153,7 @@ size_t ITCHParser::parseBuffer(size_t numBytesReceived) {
     memcpy(overflowBuf_, buffer_.ptr_ + start, bytesToCopy);
   }
 
-	overflowBufSize_ = bytesToCopy;
+  overflowBufSize_ = bytesToCopy;
 
   return bytesToCopy;
 }

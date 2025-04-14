@@ -8,12 +8,13 @@
 #include <cstdint>
 
 struct Order {
-	uint32_t qty_;
-	uint32_t levelIdx_;
-	uint32_t stockLocate_;
+  uint32_t qty_;
+  uint32_t levelIdx_;
+  uint32_t stockLocate_;
 
-	Order(uint32_t qty, uint32_t levelIdx, uint32_t bookIdx) : qty_ { qty }, levelIdx_ { levelIdx }, stockLocate_ {bookIdx } {}
-	Order() = default;
+  Order(uint32_t qty, uint32_t levelIdx, uint32_t bookIdx)
+      : qty_{qty}, levelIdx_{levelIdx}, stockLocate_{bookIdx} {}
+  Order() = default;
 };
 
-#endif //SIMPLEORDERBOOK_INCLUDE_ORDER_H_
+#endif  // SIMPLEORDERBOOK_INCLUDE_ORDER_H_
