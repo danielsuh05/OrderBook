@@ -13,6 +13,8 @@ class Pool {
  public:
 	inline Pool(size_t size) {
 		data_.reserve(size);
+		freeList_.reserve(size);
+		size_ = size;
 	}
 
 	inline T& get(size_t idx) {

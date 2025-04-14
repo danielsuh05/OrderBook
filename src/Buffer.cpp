@@ -13,8 +13,9 @@
  * @param size The size in bytes for how big the buffer should be
  * @param fd The file descriptor number from which to read from
  */
-Buffer::Buffer(size_t size, int fd)
-    : ptr_(new char[size]), size_(size), fd_(fd) {}
+Buffer::Buffer(size_t size, int fd) : size_(size), fd_(fd) {
+    ptr_ = new char[size];
+}
 
 /**
  * @brief Reads in a buffer from the given file descriptor.

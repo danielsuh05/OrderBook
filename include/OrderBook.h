@@ -20,6 +20,11 @@ class OrderBook {
  public:
 	OrderBook();
 
+	void preallocate(size_t levelsPerSide) {
+		asks.reserve(levelsPerSide);
+		bids.reserve(levelsPerSide);
+	}
+
 	void addOrder(Order& order, int32_t price, uint32_t qty, Side side, Pool<Level>& pool);
 
 	void deleteOrder(Order& order, Pool<Level>& pool);

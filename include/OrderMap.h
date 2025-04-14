@@ -11,15 +11,17 @@
 template <typename T>
 class OrderMap {
  public:
-	inline void ensureSize(size_t oid) {
-		if(oid >= size_) {
-			data_.resize(oid + 1);
-		}
-	}
-
-	inline void reserve(size_t n) {
-		data_.reserve(n);
-	}
+    inline void reserve(size_t n) {
+        data_.resize(n);
+        size_ = n;
+    }
+    
+    inline void ensureSize(size_t oid) {
+        if(oid >= size_) {
+            data_.resize(oid + 1);
+            size_ = oid + 1;
+        }
+    }
 
 	inline T& get(size_t oid) {
 		return data_[oid];

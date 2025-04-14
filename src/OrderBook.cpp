@@ -6,6 +6,8 @@
 #include "Side.h"
 
 OrderBook::OrderBook() {
+//	asks.reserve(10000);
+//	bids.reserve(10000);
 }
 
 void OrderBook::addOrder(Order& order, int32_t price, uint32_t qty, Side side, Pool<Level>& pool) {

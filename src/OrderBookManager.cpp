@@ -5,8 +5,13 @@
 #include "OrderBookManager.h"
 #include "Side.h"
 
-OrderBookManager::OrderBookManager() : books { }, pool { Constants::kPoolSize } {
-	oids.reserve(Constants::kMaxOID * 2);
+OrderBookManager::OrderBookManager() : books(1 << 14), pool(Constants::kPoolSize) {
+    oids.reserve(Constants::kMaxOID * 2);
+
+    constexpr size_t LEVELS_PER_SIDE = 1 << 3;
+    for (auto& book : books) {
+        book.preallocate(LEVELS_PER_SIDE);
+    }
 }
 
 void OrderBookManager::addOrder(uint32_t oid, int32_t price, uint32_t qty, Side side, uint32_t stockLocate) {

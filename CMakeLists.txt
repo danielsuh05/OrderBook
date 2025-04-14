@@ -5,7 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -ffast-math -march=native")
+
 
 set(BOOST_ROOT "/opt/homebrew/opt/boost")
 set(Boost_NO_SYSTEM_PATHS TRUE)

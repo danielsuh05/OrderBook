@@ -43,8 +43,8 @@ class OrderBookManager {
 	}
 
  private:
-	std::unordered_map<uint32_t, OrderBook> books;
-  Pool<Level> pool;
+	std::vector<OrderBook> books;
+	Pool<Level> pool;
 	OrderMap<Order> oids;
 };
 
